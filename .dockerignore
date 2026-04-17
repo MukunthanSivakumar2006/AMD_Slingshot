@@ -1,0 +1,29 @@
+# Python cache — never ship these
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Git metadata
+.git/
+.gitignore
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local Flask session files
+flask_session/
+instance/
+
+# This file itself and docs
+Dockerfile
+.dockerignore
+README.md
