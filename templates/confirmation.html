@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block title %}Order Confirmed! - RetailAI{% endblock %}
+
+{% block content %}
+<div class="confirmation-page">
+
+    <!-- Success icon -->
+    <div class="confirm-icon-wrap">
+        <svg class="confirm-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+        </svg>
+    </div>
+
+    <h1 class="confirm-title">Order Placed Successfully!</h1>
+    <p class="confirm-subtitle">Thank you, <strong>{{ order.name }}</strong>! Your order has been confirmed and will be delivered soon.</p>
+
+    <div class="confirm-ref">
+        Order Reference: <span>{{ order.ref }}</span>
+    </div>
+
+    <!-- Order details card -->
+    <div class="confirm-card">
+        <div class="confirm-grid">
+            <div class="confirm-section">
+                <h3 class="confirm-section-label">Shipping To</h3>
+                <p>{{ order.address }}</p>
+                <p>{{ order.city }}, {{ order.zip }}</p>
+            </div>
+            <div class="confirm-section">
+                <h3 class="confirm-section-label">Contact</h3>
+                <p>{{ order.name }}</p>
+                <p>{{ order.email }}</p>
+            </div>
+            <div class="confirm-section">
+                <h3 class="confirm-section-label">Payment</h3>
+                <p>{% if order.payment == 'card' %}Credit / Debit Card{% elif order.payment == 'paypal' %}PayPal{% else %}Cash on Delivery{% endif %}</p>
+                <p class="text-green">Payment Verified ✓</p>
+            </div>
+            <div class="confirm-section">
+                <h3 class="confirm-section-label">Estimated Delivery</h3>
+                <p>3 – 5 Business Days</p>
+                <p class="text-green">Free Shipping ✓</p>
+            </div>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <!-- Items purchased -->
+        <h3 class="confirm-section-label" style="margin-bottom:1rem;">Items Ordered</h3>
+        <div class="confirm-items">
+            {% for item in order.items %}
+            <div class="checkout-item-row">
+                <img src="{{ item.image_url }}" alt="{{ item.name }}" class="checkout-thumb">
+                <div class="checkout-item-text">
+                    <span class="checkout-item-name">{{ item.name }}</span>
+                    <span class="checkout-item-qty">Qty: {{ item.qty }}</span>
+                </div>
+                <span class="checkout-item-price">${{ "%.2f"|format(item.price * item.qty) }}</span>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="summary-divider"></div>
+        <div class="confirm-totals">
+            <div class="summary-row"><span>Subtotal</span><span>${{ order.subtotal }}</span></div>
+            <div class="summary-row"><span>Tax (8%)</span><span>${{ order.tax }}</span></div>
+            <div class="summary-row"><span>Shipping</span><span class="text-green">Free</span></div>
+            <div class="summary-row summary-total" style="margin-top:0.5rem;"><span>Total Paid</span><span>${{ order.total }}</span></div>
+        </div>
+    </div>
+
+    <div class="confirm-actions">
+        <a href="/" class="btn" style="text-decoration:none; padding:0.9rem 2rem;">Continue Shopping</a>
+        <a href="/wishlist" class="btn btn-outline" style="text-decoration:none; padding:0.9rem 2rem;">View Wishlist</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block title %}Admin Dashboard - RetailAI{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+    <div>
+        <h2 class="section-title">Inventory Intelligence</h2>
+        <p class="section-subtitle" style="margin-bottom: 0;">AI-driven demand predictions and stock analysis.</p>
+    </div>
+    <button class="btn" style="width: auto; background: var(--text-main);">Export Report</button>
+</div>
+
+<table class="dashboard-table">
+    <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Name</th>
+            <th>Current Stock</th>
+            <th>Total Sold</th>
+            <th>AI Status</th>
+            <th>Recommended Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in insights %}
+        <tr>
+            <td>#{{ item.id }}</td>
+            <td style="font-weight: 500;">{{ item.name }}</td>
+            <td>{{ item.stock }} units</td>
+            <td>{{ item.total_sold }} units</td>
+            <td>
+                {% set status_class = 'status-normal' %}
+                {% if item.status == 'Low Stock' %}
+                    {% set status_class = 'status-low' %}
+                {% elif item.status == 'High Demand Risk' %}
+                    {% set status_class = 'status-high' %}
+                {% elif item.status == 'Overstock' %}
+                    {% set status_class = 'status-over' %}
+                {% endif %}
+                <span class="status-badge {{ status_class }}">{{ item.status }}</span>
+            </td>
+            <td><strong>{{ item.action }}</strong></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

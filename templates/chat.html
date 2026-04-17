@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+
+{% block title %}Chat - RetailAI{% endblock %}
+
+{% block content %}
+<h2 class="section-title" style="text-align: center;">Smart Assistant</h2>
+<p class="section-subtitle" style="text-align: center;">Ask about products, orders, or support.</p>
+
+<div class="chat-container">
+    <div class="chat-header">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        RetailAI Support
+    </div>
+    
+    <div class="chat-messages" id="chatMessages">
+        <div class="message bot">
+            Hello! I'm your AI assistant. How can I help you today? You can ask me to find products or inquire about our store policies.
+        </div>
+    </div>
+    
+    <div class="chat-input">
+        <input type="text" id="userInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+        <button onclick="sendMessage()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<script>
+    const messagesContainer = document.getElementById('chatMessages');
+    const inputField = document.getElementById('userInput');
+
+    function handleKeyPress(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    }
+
+    async function sendMessage() {
+        const text = inputField.value.trim();
+        if (!text) return;
+
+        // Add user message to UI
+        addMessage(text, 'user');
+        inputField.value = '';
+
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ query: text })
+            });
+            
+            const data = await response.json();
+            
+            // Add bot message
+            setTimeout(() => addMessage(data.response, 'bot'), 500);
+            
+        } catch (error) {
+            console.error('Error:', error);
+            addMessage("Sorry, I'm having trouble connecting to the server.", 'bot');
+        }
+    }
+
+    function addMessage(text, sender) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${sender}`;
+        msgDiv.textContent = text;
+        messagesContainer.appendChild(msgDiv);
+        
+        // Auto-scroll to bottom
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,11 @@
+product_id,name,category,price,stock,description,image_url
+101,Smartphone X,Electronics,799.99,50,Latest smartphone with AI features,https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&q=80
+102,Wireless Earbuds,Electronics,149.99,200,Noise-canceling true wireless earbuds,https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400&q=80
+103,Coffee Maker Pro,Home & Kitchen,89.50,15,Programmable coffee maker with timer,https://images.unsplash.com/photo-1495474472205-51f7d4c062c3?w=400&q=80
+104,Running Shoes,Clothing,120.00,45,Lightweight athletic shoes for runners,https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80
+105,Yoga Mat,Fitness,25.00,100,Non-slip exercise yoga mat,https://images.unsplash.com/photo-1592432678016-e910b452f9a2?w=400&q=80
+106,Laptop Stand,Electronics,35.00,80,Ergonomic aluminum laptop stand,https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?w=400&q=80
+107,Cotton T-Shirt,Clothing,15.99,300,100% cotton basic crew t-shirt,https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&q=80
+108,Blender Master,Home & Kitchen,55.00,8,High speed smoothie blender,https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=400&q=80
+109,Smart Watch,Electronics,199.99,12,Fitness tracking watch with heart rate monitor,https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=400&q=80
+110,Dumbbell Set,Fitness,65.00,5,Adjustable weight dumbbell set for home gym,https://images.unsplash.com/photo-1586401100295-7a8096fd231a?w=400&q=80

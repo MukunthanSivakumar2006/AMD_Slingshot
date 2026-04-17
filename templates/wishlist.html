@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+
+{% block title %}Your Wishlist - RetailAI{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="section-title">Your Wishlist</h1>
+        <p class="section-subtitle">
+            {% if wishlist_items %}{{ wishlist_items|length }} saved item{{ 's' if wishlist_items|length != 1 }}{% else %}Nothing saved yet{% endif %}
+        </p>
+    </div>
+    <a href="/" class="btn" style="width:auto; text-decoration:none;">Continue Shopping</a>
+</div>
+
+{% if wishlist_items %}
+<div class="wishlist-grid">
+    {% for item in wishlist_items %}
+    <div class="wishlist-card">
+        <a href="/product/{{ item.product_id }}" class="wishlist-img-wrap">
+            <img src="{{ item.image_url }}" alt="{{ item.name }}" class="wishlist-img">
+        </a>
+
+        <div class="wishlist-info">
+            <span class="category-tag" style="font-size:0.72rem;">{{ item.category }}</span>
+            <a href="/product/{{ item.product_id }}" class="wishlist-name">{{ item.name }}</a>
+            <div class="wishlist-price">${{ "%.2f"|format(item.price) }}</div>
+
+            <div class="wishlist-actions">
+                <!-- Move to cart -->
+                <form action="/move_to_cart/{{ item.product_id }}" method="POST" style="flex:1">
+                    <button type="submit" class="btn" style="width:100%; padding:0.6rem; font-size:0.9rem;">
+                        Add to Cart
+                    </button>
+                </form>
+                <!-- Remove from wishlist -->
+                <form action="/remove_from_wishlist/{{ item.product_id }}" method="POST">
+                    <button type="submit" class="remove-btn" title="Remove from wishlist">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+                            <path d="M10 11v6"></path><path d="M14 11v6"></path>
+                            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% else %}
+<!-- Empty wishlist state -->
+<div class="empty-state">
+    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+    <h2>Your wishlist is empty</h2>
+    <p>Save items you love and come back to them later.</p>
+    <a href="/" class="btn" style="width:auto; text-decoration:none; margin-top:1rem;">Discover Products</a>
+</div>
+{% endif %}
+{% endblock %}

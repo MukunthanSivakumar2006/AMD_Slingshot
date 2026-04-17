@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+
+{% block title %}Your Cart - RetailAI{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="section-title">Your Cart</h1>
+        <p class="section-subtitle">
+            {% if cart_items %}{{ cart_items|length }} item{{ 's' if cart_items|length != 1 }} in your cart{% else %}Your cart is empty{% endif %}
+        </p>
+    </div>
+    <a href="/" class="btn" style="width:auto; text-decoration:none;">Continue Shopping</a>
+</div>
+
+{% if cart_items %}
+<div class="cart-layout">
+
+    <!-- Item list -->
+    <div class="cart-items">
+        {% for item in cart_items %}
+        <div class="cart-item">
+            <img src="{{ item.image_url }}" alt="{{ item.name }}" class="cart-item-img">
+
+            <div class="cart-item-info">
+                <a href="/product/{{ item.product_id }}" class="cart-item-name">{{ item.name }}</a>
+                <span class="category-tag" style="font-size:0.72rem;">{{ item.category }}</span>
+                <div class="cart-item-price">${{ "%.2f"|format(item.price) }}</div>
+            </div>
+
+            <!-- Quantity control -->
+            <form action="/update_cart/{{ item.product_id }}" method="POST" class="qty-form">
+                <div class="qty-control">
+                    <button type="submit" name="qty" value="{{ item.qty - 1 }}" class="qty-btn">−</button>
+                    <span class="qty-display">{{ item.qty }}</span>
+                    <button type="submit" name="qty" value="{{ item.qty + 1 }}" class="qty-btn">+</button>
+                </div>
+            </form>
+
+            <div class="cart-item-subtotal">${{ "%.2f"|format(item.price * item.qty) }}</div>
+
+            <!-- Remove -->
+            <form action="/remove_from_cart/{{ item.product_id }}" method="POST">
+                <button type="submit" class="remove-btn" title="Remove">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+                        <path d="M10 11v6"></path><path d="M14 11v6"></path>
+                        <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Order summary sidebar -->
+    <div class="order-summary">
+        <h2 class="summary-title">Order Summary</h2>
+
+        <div class="summary-row">
+            <span>Subtotal</span><span>${{ subtotal }}</span>
+        </div>
+        <div class="summary-row">
+            <span>Tax (8%)</span><span>${{ tax }}</span>
+        </div>
+        <div class="summary-row">
+            <span>Shipping</span><span class="text-green">Free</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-row summary-total">
+            <span>Total</span><span>${{ total }}</span>
+        </div>
+
+        <a href="/checkout" class="btn" style="width:100%; margin-top:1.5rem; padding:1rem; font-size:1rem; text-decoration:none; display:block; text-align:center;">
+            Proceed to Checkout →
+        </a>
+        <a href="/wishlist" class="btn btn-outline" style="width:100%; margin-top:0.75rem; display:block; text-align:center; text-decoration:none; padding:0.75rem;">
+            View Wishlist
+        </a>
+    </div>
+
+</div>
+
+{% else %}
+<!-- Empty cart state -->
+<div class="empty-state">
+    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+    </svg>
+    <h2>Your cart is empty</h2>
+    <p>Looks like you haven't added anything yet.</p>
+    <a href="/" class="btn" style="width:auto; text-decoration:none; margin-top:1rem;">Browse Products</a>
+</div>
+{% endif %}
+
+<script>
+function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className   = `toast toast-${type} toast-visible`;
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => { toast.className = 'toast'; }, 3000);
+}
+</script>
+{% endblock %}
